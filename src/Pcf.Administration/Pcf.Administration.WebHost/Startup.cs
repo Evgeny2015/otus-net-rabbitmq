@@ -47,7 +47,12 @@ namespace Pcf.Administration.WebHost
                 x.UsingRabbitMq((context, cfg) =>
                 {
                     ConfigureRmq(cfg, Configuration);
-                    RegisterEndPoints(cfg);
+                    //RegisterEndPoints(cfg);
+
+                    cfg.ReceiveEndpoint("order-service", e =>
+                    {
+                        e.ConfigureConsumer<PartnerManagerConsumer>(context);
+                    });
                 });
             });
             
@@ -102,19 +107,19 @@ namespace Pcf.Administration.WebHost
                 });
         }
 
-        private static void RegisterEndPoints(IRabbitMqBusFactoryConfigurator configurator)
-        {
-            configurator.ReceiveEndpoint("queue-Admin", e =>
-            {
-                e.Consumer<PartnerManagerConsumer>();
-                e.UseMessageRetry(r =>
-                {
-                    r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
-                });
-                e.PrefetchCount = 1;
-                e.UseConcurrencyLimit(1);
-            });
+        //private static void RegisterEndPoints(IRabbitMqBusFactoryConfigurator configurator)
+        //{
+        //    configurator.ReceiveEndpoint("queue-Admin", e =>
+        //    {
+        //        e.ConfigureConsumer<PartnerManagerConsumer>();
+        //        e.UseMessageRetry(r =>
+        //        {
+        //            r.Incremental(3, TimeSpan.FromSeconds(1), TimeSpan.FromSeconds(1));
+        //        });
+        //        e.PrefetchCount = 1;
+        //        e.UseConcurrencyLimit(1);
+        //    });
 
-        }
+        //}
     }
 }
