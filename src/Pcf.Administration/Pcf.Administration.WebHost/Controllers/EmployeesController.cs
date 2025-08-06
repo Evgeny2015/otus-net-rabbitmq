@@ -19,10 +19,12 @@ namespace Pcf.Administration.WebHost.Controllers
         : ControllerBase
     {
         private readonly IRepository<Employee> _employeeRepository;
+        private readonly EmployeeService _employeeService;
 
-        public EmployeesController(IRepository<Employee> employeeRepository)
+        public EmployeesController(IRepository<Employee> employeeRepository, EmployeeService employeeService)
         {
             _employeeRepository = employeeRepository;
+            _employeeService = employeeService;
         }
 
         /// <summary>
@@ -84,7 +86,7 @@ namespace Pcf.Administration.WebHost.Controllers
 
         public async Task<IActionResult> UpdateAppliedPromocodesAsync(Guid id)
         {
-            if (await EmployeeService.UpdateAppliedPromocodesAsync(_employeeRepository, id))
+            if (await _employeeService.UpdateAppliedPromocodesAsync(id))
                 return Ok();
             else
                 return NotFound();            
