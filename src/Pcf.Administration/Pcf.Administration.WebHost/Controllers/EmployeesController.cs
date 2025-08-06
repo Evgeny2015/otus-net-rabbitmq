@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Pcf.Administration.Core.Abstractions.Repositories;
 using Pcf.Administration.Core.Domain.Administration;
 using Pcf.Administration.WebHost.Models;
+using Pcf.Administration.WebHost.Service;
 
 namespace Pcf.Administration.WebHost.Controllers
 {
@@ -83,16 +84,10 @@ namespace Pcf.Administration.WebHost.Controllers
 
         public async Task<IActionResult> UpdateAppliedPromocodesAsync(Guid id)
         {
-            var employee = await _employeeRepository.GetByIdAsync(id);
-
-            if (employee == null)
-                return NotFound();
-
-            employee.AppliedPromocodesCount++;
-
-            await _employeeRepository.UpdateAsync(employee);
-
-            return Ok();
+            if (await EmployeeService.UpdateAppliedPromocodesAsync(_employeeRepository, id))
+                return Ok();
+            else
+                return NotFound();            
         }
     }
 }
