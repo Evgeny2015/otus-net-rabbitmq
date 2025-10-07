@@ -10,7 +10,7 @@ namespace Pcf.ReceivingFromPartner.Integration
 {
     public class GivingPromoCodeToCustomerGatewayRabbitMQ : IGivingPromoCodeToCustomerGateway
     {
-        MasstransitService _service;        
+        private readonly MasstransitService _service;        
         public GivingPromoCodeToCustomerGatewayRabbitMQ(MasstransitService service)
         {        
             _service = service;
