@@ -13,6 +13,7 @@ using System;
 using MassTransit;
 using Pcf.RabbitMQ.Consumer;
 using WebApi.Settings;
+using Pcf.Administration.WebHost.Service;
 
 namespace Pcf.Administration.WebHost
 {
@@ -40,6 +41,7 @@ namespace Pcf.Administration.WebHost
                 x.UseSnakeCaseNamingConvention();
                 x.UseLazyLoadingProxies();
             });
+            services.AddScoped<IEmployeeService, EmployeeService>();
 
             services.AddMassTransit(x =>
             {
